@@ -8,8 +8,8 @@
 #include <iterator>
 #include <vector>
 #include <queue>
-#include "Cashier.h"
-#include "Barista.h"
+#include "Cash.h"
+#include "Bar.h"
 #include "Customer.h"
 #include "iomanip"
 using namespace std;
@@ -50,18 +50,18 @@ int main(int argc, char* argv[]) {
     int n, islem;
     getline(infile, line);
     n = stoi(line);
-    cout << "number of Cashier: " << n << endl;
+    cout << "number of Cash: " << n << endl;
 
     getline(infile, line);
     islem = stoi(line);
     cout << "number of Customer: " << islem << endl;
 
-    vector<Cashier> cashier2;
+    vector<Cash> cashier2;
     vector<Customer> customer2;
-    vector<Barista> bar2;
-    vector<Cashier> cashier;
+    vector<Bar> bar2;
+    vector<Cash> cashier;
     vector<Customer> customer;
-    vector<Barista> bar;
+    vector<Bar> bar;
     vector<priority_queue<Customer,vector<Customer>,CustomCompare1>> queue;
     priority_queue<Customer,vector<Customer>, CustomCompare> pq;
     priority_queue<Customer,vector<Customer>, CustomCompare> pq2;
@@ -70,13 +70,13 @@ int main(int argc, char* argv[]) {
     priority_queue<Customer,vector<Customer>,CustomCompare1> baristaQ;
 
     for (int i = 0; i < n; i++) {
-        Cashier a(i);
+        Cash a(i);
         cashier2.push_back(a);
         cashier.push_back(a);
     }
 
     for (int i = 0; i < n / 3; i++) {
-        Barista a(i);
+        Bar a(i);
         bar2.push_back(a);
         bar.push_back(a);
         priority_queue<Customer,vector<Customer>,CustomCompare1> baristaQ;
