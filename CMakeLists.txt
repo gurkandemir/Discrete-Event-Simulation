@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.8)
-project(Project2)
+cmake_minimum_required(VERSION 2.8)
+project(project2)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES Customer.h Customer.cpp Cashier.h Cashier.cpp Barista.h Barista.cpp main.cpp)
-add_executable(Project2 ${SOURCE_FILES})
+add_executable(project2 ${SOURCE_FILES})
