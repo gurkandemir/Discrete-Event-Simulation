@@ -34,27 +34,15 @@ struct CustomCompare1{
         return lhs.price < rhs.price;
     }
 };
+
 int main(int argc, char* argv[]) {
-
-    if (argc != 3) {
-        cout << "Run the code with the following command: ./project1 [input_file] [output_file]" << endl;
-        return 2;
-    }
-
-    cout << "input file: " << argv[1] << endl;
-    cout << "output file: " << argv[2] << endl;
-
-
     ifstream infile(argv[1]);
     string line = "";
-    int n, islem;
+    int numCash, numOrd;
     getline(infile, line);
-    n = stoi(line);
-    cout << "number of Cash: " << n << endl;
-
+    numCash = stoi(line);
     getline(infile, line);
-    islem = stoi(line);
-    cout << "number of Customer: " << islem << endl;
+    numOrd = stoi(line);
 
     vector<Cash> cashier2;
     vector<Customer> customer2;
@@ -69,13 +57,13 @@ int main(int argc, char* argv[]) {
     priority_queue<Customer,vector<Customer>, CustomCompare> cashierQ2;
     priority_queue<Customer,vector<Customer>,CustomCompare1> baristaQ;
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < numCash; i++) {
         Cash a(i);
         cashier2.push_back(a);
         cashier.push_back(a);
     }
 
-    for (int i = 0; i < n / 3; i++) {
+    for (int i = 0; i < numCash / 3; i++) {
         Bar a(i);
         bar2.push_back(a);
         bar.push_back(a);
@@ -83,7 +71,7 @@ int main(int argc, char* argv[]) {
         queue.push_back(baristaQ);
     }
 
-    for (int i = 0; i < islem; i++) {
+    for (int i = 0; i < numOrd; i++) {
         vector<string> words;
         getline(infile, line);
         split1(line, words);
@@ -94,11 +82,9 @@ int main(int argc, char* argv[]) {
         customer.push_back(c);
     }
 
-    cout << "input file has been read" << endl;
-
     int maxCashQue=0;
     int maxBarQue=0;
-    float last=0;
+    double last=0;
     while(!pq.empty()) {
         Customer c = pq.top();
         int order = c.index;
@@ -163,6 +149,7 @@ int main(int argc, char* argv[]) {
                     customer[order].setCurTime(customer[order].getBarEnd());
                     customer[order].barInt = i;
                     customer[order].bar = true;
+                    if(last<customer[order].getBarEnd())
                     last = customer[order].getBarEnd();
                     break;
                 } else {
@@ -191,6 +178,7 @@ int main(int argc, char* argv[]) {
                 customer[order1].setCurTime(customer[order1].getBarEnd());
                 customer[order1].setStatus(4);
                 pq.push(customer[order1]);
+                if(last<customer[order1].getBarEnd())
                 last = customer[order1].getBarEnd();
                 baristaQ.pop();
             }
@@ -271,7 +259,8 @@ int main(int argc, char* argv[]) {
                         customer2[order].setCurTime(customer2[order].getBarEnd());
                         customer2[order].barInt = i;
                         customer2[order].bar = true;
-                        last2 = customer2[order].getBarEnd();
+                        if(last2<customer[order].getBarEnd())
+                            last2 = customer2[order].getBarEnd();
                         break;
                     } else {
                         count++;
@@ -304,7 +293,8 @@ int main(int argc, char* argv[]) {
                 customer2[order1].setCurTime(customer2[order1].getBarEnd());
                 customer2[order1].setStatus(4);
                 pq2.push(customer2[order1]);
-                last2=customer2[order1].getBarEnd();
+                if(last2<customer[order1].getBarEnd())
+                    last2=customer2[order1].getBarEnd();
                 queue[customer2[order].cashierInt/3].pop();
             }
         }
@@ -314,7 +304,6 @@ int main(int argc, char* argv[]) {
     myfile.open(argv[2]);
     myfile << std::fixed;
     myfile << std::setprecision(2);
-
     myfile<<last<<endl;
     myfile<<maxCashQue<<endl;
     myfile<<maxBarQue<<endl;
