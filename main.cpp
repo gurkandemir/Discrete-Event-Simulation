@@ -330,9 +330,10 @@ int main(int argc, char* argv[]) {
     for(int i=0;i<bar2.size();i++)
         myfile<<(bar2[i].utilizationTime / last2)<<endl;
 
-    for(int i=0;i<customer2.size();i++)
+    for(int i=0;i<customer2.size()-1;i++)
         myfile<<(customer2[i].getBarEnd()-customer2[i].getArrivalTime())<<endl;
 
+    myfile<<customer2[customer2.size()-1].getBarEnd()-customer2[customer2.size()-1].getArrivalTime();
     myfile.close();
 
     return 0;
