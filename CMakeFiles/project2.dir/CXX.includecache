@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Bar.h
+queue
+-
+vector
+-
+Customer.h
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Customer.h
+
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Cash.h
+
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Customer.h
+iostream
+-
+
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/main.cpp
+iostream
+-
+sstream
+-
+algorithm
+-
+fstream
+-
+iterator
+-
+vector
+-
+queue
+-
+Cash.h
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Cash.h
+Bar.h
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Bar.h
+Customer.h
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/Customer.h
+iomanip
+/home/student/Desktop/project2-gurkan-demir-2015400177-master/iomanip
+

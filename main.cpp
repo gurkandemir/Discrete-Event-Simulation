@@ -259,7 +259,7 @@ int main(int argc, char* argv[]) {
                         customer2[order].setCurTime(customer2[order].getBarEnd());
                         customer2[order].barInt = i;
                         customer2[order].bar = true;
-                        if(last2<customer[order].getBarEnd())
+                        if(last2<customer2[order].getBarEnd())
                             last2 = customer2[order].getBarEnd();
                         break;
                     } else {
@@ -293,8 +293,9 @@ int main(int argc, char* argv[]) {
                 customer2[order1].setCurTime(customer2[order1].getBarEnd());
                 customer2[order1].setStatus(4);
                 pq2.push(customer2[order1]);
-                if(last2<customer[order1].getBarEnd())
+                if(last2 < customer2[order1].getBarEnd())
                     last2=customer2[order1].getBarEnd();
+
                 queue[customer2[order].cashierInt/3].pop();
             }
         }

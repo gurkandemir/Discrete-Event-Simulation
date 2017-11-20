@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11    CMakeFiles/project2.dir/Customer.cpp.o CMakeFiles/project2.dir/Cash.cpp.o CMakeFiles/project2.dir/Bar.cpp.o CMakeFiles/project2.dir/main.cpp.o  -o project2 -rdynamic 
