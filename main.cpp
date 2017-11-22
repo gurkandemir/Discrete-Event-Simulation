@@ -23,12 +23,14 @@ void split1(const string& str, Container& cont)
          back_inserter(cont));
 }
 
+//Method in order to order customers with their current time
 struct CustomCompare{
     bool operator()(const Customer& lhs, const Customer& rhs) {
         return lhs.curTime > rhs.curTime;
     }
 };
 
+//Method in order to order customers with their prices in bar queue
 struct CustomCompare1{
     bool operator()(const Customer& lhs, const Customer& rhs) {
         return lhs.price < rhs.price;
@@ -38,31 +40,33 @@ struct CustomCompare1{
 int main(int argc, char* argv[]) {
     ifstream infile(argv[1]);
     string line = "";
-    int numCash, numOrd;
+    int numCash, numOrd;//Number of cashiers and orders.
     getline(infile, line);
     numCash = stoi(line);
     getline(infile, line);
     numOrd = stoi(line);
 
-    vector<Cash> cashier2;
-    vector<Customer> customer2;
-    vector<Bar> bar2;
-    vector<Cash> cashier;
-    vector<Customer> customer;
-    vector<Bar> bar;
-    vector<priority_queue<Customer,vector<Customer>,CustomCompare1>> queue;
-    priority_queue<Customer,vector<Customer>, CustomCompare> pq;
-    priority_queue<Customer,vector<Customer>, CustomCompare> pq2;
-    priority_queue<Customer,vector<Customer>, CustomCompare> cashierQ;
-    priority_queue<Customer,vector<Customer>, CustomCompare> cashierQ2;
-    priority_queue<Customer,vector<Customer>,CustomCompare1> baristaQ;
+    vector<Cash> cashier2;//Cashier vector for model2
+    vector<Customer> customer2;//Customer vector for model2
+    vector<Bar> bar2;//Bar vector for model2
+    vector<Cash> cashier;//Cashier vector for model1
+    vector<Customer> customer;//Customer vector for model1
+    vector<Bar> bar;//Bar vector for model1
+    vector<priority_queue<Customer,vector<Customer>,CustomCompare1>> queue; //Queue for barista queues for model2
+    priority_queue<Customer,vector<Customer>, CustomCompare> pq; // Priority queue in order to list customers according to price for model1
+    priority_queue<Customer,vector<Customer>, CustomCompare> pq2; // Priority queue in order to list customers according to price for model2
+    priority_queue<Customer,vector<Customer>, CustomCompare> cashierQ; //Cashier queue for model1
+    priority_queue<Customer,vector<Customer>, CustomCompare> cashierQ2; //Cashier queue for model2
+    priority_queue<Customer,vector<Customer>,CustomCompare1> baristaQ; // Priority queue in order to list customers according to price for model1
 
+    //Constructs cashiers.
     for (int i = 0; i < numCash; i++) {
         Cash a(i);
         cashier2.push_back(a);
         cashier.push_back(a);
     }
 
+    //Constructs bars.
     for (int i = 0; i < numCash / 3; i++) {
         Bar a(i);
         bar2.push_back(a);
@@ -71,6 +75,7 @@ int main(int argc, char* argv[]) {
         queue.push_back(baristaQ);
     }
 
+    //Construct customers.
     for (int i = 0; i < numOrd; i++) {
         vector<string> words;
         getline(infile, line);
@@ -85,9 +90,11 @@ int main(int argc, char* argv[]) {
     int maxCashQue=0;
     int maxBarQue=0;
     double last=0;
+    //Model1
     while(!pq.empty()) {
         Customer c = pq.top();
         int order = c.index;
+        //if customer have not been in cashier before.
         if (customer[order].getStatus() == 1) {
             int count = 0;
             for (int i = 0; i < cashier.size(); i++) {
@@ -106,7 +113,7 @@ int main(int argc, char* argv[]) {
                     count++;
                 }
             }
-
+            //if all cashiers are full
             if (count == cashier.size()) {
                 cashierQ.push(customer[order]);
                 if (cashierQ.size() > maxCashQue)
@@ -115,7 +122,9 @@ int main(int argc, char* argv[]) {
                 customer[order].setStatus(2);
                 pq.push(customer[order]);
             }
-        } else if (customer[order].getStatus() == 2) {
+        }
+        //if customer is done with cashier.
+        else if (customer[order].getStatus() == 2) {
             if (!cashierQ.empty()) {
                 Customer c1 = cashierQ.top();
                 int index = customer[order].cashierInt;
@@ -134,7 +143,9 @@ int main(int argc, char* argv[]) {
             customer[order].setStatus(3);
             pq.push(customer[order]);
 
-        } else if (customer[order].getStatus() == 3) {
+        }
+        //if customer have not been in bar before.
+        else if (customer[order].getStatus() == 3) {
             int count = 0;
             for (int i = 0; i < bar.size(); i++) {
                 if (customer[order].getBarArrival() >= bar[i].getEndTime()) {
@@ -156,7 +167,7 @@ int main(int argc, char* argv[]) {
                     count++;
                 }
             }
-
+            //if all bars are full
             if (count == bar.size()) {
                 baristaQ.push(customer[order]);
                 if (baristaQ.size() > maxBarQue)
@@ -165,7 +176,9 @@ int main(int argc, char* argv[]) {
                 customer[order].setStatus(4);
                 pq.push(customer[order]);
             }
-        } else {
+        }
+        //if customer is done with bar.
+        else {
             if (!baristaQ.empty()) {
                 Customer c1 = baristaQ.top();
                 int order1 = c1.index;
@@ -188,9 +201,11 @@ int main(int argc, char* argv[]) {
 
     int maxCashQue2=0;
     double last2=0;
+    //Model2
     while(!pq2.empty()){
         Customer c=pq2.top();
         int order=c.index;
+        //if customer have not been in cashier before.
         if(customer2[order].getStatus()==1){
             int count=0;
             for(int i=0;i<cashier2.size();i++){
@@ -210,7 +225,7 @@ int main(int argc, char* argv[]) {
                     count++;
                 }
             }
-
+            //if all cashiers are full
             if(count==cashier2.size()) {
                 cashierQ2.push(customer2[order]);
                 if(cashierQ2.size()>maxCashQue2)
@@ -222,6 +237,7 @@ int main(int argc, char* argv[]) {
                 pq2.push(customer2[order]);
             }
         }
+            //if customer is done with cashier
         else if(customer2[order].getStatus()==2){
             if(!cashierQ2.empty()){
                 Customer c1=cashierQ2.top();
@@ -242,7 +258,7 @@ int main(int argc, char* argv[]) {
             pq2.push(customer2[order]);
 
         }
-
+            //if customer have not been in bar before.
         else if(customer2[order].getStatus()==3){
             int count=0;
             for(int i=0;i<bar2.size();i++){
@@ -267,7 +283,7 @@ int main(int argc, char* argv[]) {
                     }
                 }
             }
-
+            //if necessary bar is full
             if(count==1){
                 queue[customer2[order].cashierInt/3].push(customer2[order]);
                 if(queue[customer2[order].cashierInt/3].size()>bar2[customer2[order].cashierInt/3].maxQue)
@@ -279,7 +295,7 @@ int main(int argc, char* argv[]) {
                 pq2.push(customer2[order]);
             }
         }
-
+            //if customer is done with bar.
         else{
             if(!queue[customer2[order].cashierInt/3].empty()){
                 Customer c1=queue[customer2[order].cashierInt/3].top();
@@ -301,6 +317,8 @@ int main(int argc, char* argv[]) {
         }
         pq2.pop();
     }
+
+    //Prints output.
     ofstream myfile;
     myfile.open(argv[2]);
     myfile << std::fixed;
