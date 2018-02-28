@@ -1,10 +1,3 @@
-# CMPE250_2017Fall_Project2
-
-Due date: 23.11.2017 23:59
-
-Please check out Project2.pdf for description of the project.
-
-Due date is a strict due date!
 
 ## How to compile
 
